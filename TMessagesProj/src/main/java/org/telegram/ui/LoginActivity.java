@@ -769,7 +769,7 @@ public class LoginActivity extends BaseFragment {
                 needShowAlert(LocaleController.getString("AppName", R.string.AppName), LocaleController.getString("WrongCountry", R.string.WrongCountry));
                 return;
             }
-            if (codeField.length() == 0) {
+            if (codeField.length() < 1) {
                 needShowAlert(LocaleController.getString("AppName", R.string.AppName), LocaleController.getString("InvalidPhoneNumber", R.string.InvalidPhoneNumber));
                 return;
             }
@@ -1635,7 +1635,9 @@ public class LoginActivity extends BaseFragment {
             System.arraycopy(current_salt, 0, hash, hash.length - current_salt.length, current_salt.length);
 
             final TLRPC.TL_auth_checkPassword req = new TLRPC.TL_auth_checkPassword();
-            req.password_hash = Utilities.computeSHA256(hash, 0, hash.length);
+            //Inserted
+//            req.password_hash = Utilities.computeSHA256(hash, 0, hash.length);
+            req.password_hash = Utilities.computeLSH256(hash, 0, hash.length);
             ConnectionsManager.getInstance().performRpc(req, new RPCRequest.RPCRequestDelegate() {
                 @Override
                 public void run(final TLObject response, final TLRPC.TL_error error) {

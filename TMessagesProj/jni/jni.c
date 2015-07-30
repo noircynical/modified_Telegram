@@ -52,6 +52,12 @@ JNIEXPORT void Java_org_telegram_messenger_Utilities_aesIgeEncryption(JNIEnv *en
     (*env)->ReleaseByteArrayElements(env, iv, ivBuff, 0);
 }
 
+//int hashbitlen, byte[] data, int databitlen, byte[] hashval);
+JNIEXPORT jbyteArray JNICALL Java_org_telegram_messenger_Utilities_LSH256 (JNIEnv* env, jobject buffer, jint hashbitlen, jbyteArray data, jint databitlen, jbyteArray hashval){
+    unsigned char *inputData= (unsigned char*)(*env)->GetByteArrayElements(env, data, NULL);
+    unsigned char *outputData= (unsigned char*)(*env)->GetByteArrayElements(env, hashval, NULL);
+}
+
 uint64_t gcd(uint64_t a, uint64_t b){
     while(a != 0 && b != 0) {
         while((b & 1) == 0) b >>= 1;

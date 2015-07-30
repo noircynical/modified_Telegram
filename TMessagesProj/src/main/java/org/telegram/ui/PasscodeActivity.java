@@ -534,7 +534,9 @@ public class PasscodeActivity extends BaseFragment implements NotificationCenter
                 System.arraycopy(UserConfig.passcodeSalt, 0, bytes, 0, 16);
                 System.arraycopy(passcodeBytes, 0, bytes, 16, passcodeBytes.length);
                 System.arraycopy(UserConfig.passcodeSalt, 0, bytes, passcodeBytes.length + 16, 16);
-                UserConfig.passcodeHash = Utilities.bytesToHex(Utilities.computeSHA256(bytes, 0, bytes.length));
+                //Inserted
+//                UserConfig.passcodeHash = Utilities.bytesToHex(Utilities.computeSHA256(bytes, 0, bytes.length));
+                UserConfig.passcodeHash = Utilities.bytesToHex(Utilities.computeLSH256(bytes, 0, bytes.length));
             } catch (Exception e) {
                 FileLog.e("tmessages", e);
             }

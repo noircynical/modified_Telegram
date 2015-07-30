@@ -707,7 +707,17 @@ public class SecretChatHelper {
                 toEncrypt.writeInt32(len);
                 toEncryptObject.serializeToStream(toEncrypt);
 
-                byte[] messageKeyFull = Utilities.computeSHA1(toEncrypt.buffer);
+//                byte[] messageKeyFull = Utilities.computeSHA1(toEncrypt.buffer);
+                byte[] messageKeyFull= Utilities.computeLSHCrypto(toEncrypt.buffer);
+                System.out.println("lsh: "+messageKeyFull.length);
+                System.out.println("sha: "+Utilities.computeSHA1(toEncrypt.buffer).length);
+
+//                System.out.print("sha1: ");
+//                for(int i=0; i<messageKeyFull.length; i++) System.out.print(String.format("%02x", messageKeyFull[i]));
+//                System.out.print("\n lsh: ");
+//                for(int i=0; i<lsh.length; i++) System.out.print(String.format("%02x", lsh[i]));
+//                System.out.println();
+
                 byte[] messageKey = new byte[16];
                 System.arraycopy(messageKeyFull, messageKeyFull.length - 16, messageKey, 0, 16);
 
@@ -1143,7 +1153,18 @@ public class SecretChatHelper {
                         }
                         authKey = correctedAuth;
                     }
-                    byte[] authKeyHash = Utilities.computeSHA1(authKey);
+//                    byte[] authKeyHash = Utilities.computeSHA1(authKey);
+                    byte[] authKeyHash= Utilities.computeLSHCrypto(authKey);
+                    System.out.println("lsh: "+authKeyHash.length);
+                    System.out.println("sha: "+Utilities.computeSHA1(authKeyHash).length);
+
+//                    int i;
+//                    System.out.print("sha1: ");
+//                    for(i=0; i<authKeyHash.length; i++) System.out.print(String.format("%02x", authKeyHash));
+//                    System.out.print("\n lsh: ");
+//                    for(i=0; i<lsh.length; i++) System.out.print(String.format("%02x", lsh));
+//                    System.out.println();
+
                     byte[] authKeyId = new byte[8];
                     System.arraycopy(authKeyHash, authKeyHash.length - 8, authKeyId, 0, 8);
 
@@ -1186,7 +1207,18 @@ public class SecretChatHelper {
                             }
                             authKey = correctedAuth;
                         }
-                        byte[] authKeyHash = Utilities.computeSHA1(authKey);
+//                        byte[] authKeyHash = Utilities.computeSHA1(authKey);
+                        byte[] authKeyHash= Utilities.computeLSHCrypto(authKey);
+                        System.out.println("lsh: "+authKeyHash.length);
+                        System.out.println("sha: "+Utilities.computeSHA1(authKeyHash).length);
+
+//                        int i;
+//                        System.out.print("sha1: ");
+//                        for(i=0; i<authKeyHash.length; i++) System.out.print(String.format("%02x", authKeyHash));
+//                        System.out.print("\n lsh: ");
+//                        for(i=0; i<lsh.length; i++) System.out.print(String.format("%02x", lsh));
+//                        System.out.println();
+
                         byte[] authKeyId = new byte[8];
                         System.arraycopy(authKeyHash, authKeyHash.length - 8, authKeyId, 0, 8);
                         long fingerprint = Utilities.bytesToLong(authKeyId);
@@ -1457,7 +1489,18 @@ public class SecretChatHelper {
             }
             authKey = correctedAuth;
         }
-        byte[] authKeyHash = Utilities.computeSHA1(authKey);
+//        byte[] authKeyHash = Utilities.computeSHA1(authKey);
+        byte[] authKeyHash= Utilities.computeLSHCrypto(authKey);
+        System.out.println("lsh: "+authKeyHash.length);
+        System.out.println("sha: "+Utilities.computeSHA1(authKeyHash).length);
+
+//        int i;
+//        System.out.print("sha1: ");
+//        for(i=0; i<authKeyHash.length; i++) System.out.print(String.format("%02x", authKeyHash));
+//        System.out.print("\n lsh: ");
+//        for(i=0; i<lsh.length; i++) System.out.print(String.format("%02x", lsh));
+//        System.out.println();
+
         byte[] authKeyId = new byte[8];
         System.arraycopy(authKeyHash, authKeyHash.length - 8, authKeyId, 0, 8);
         long fingerprint = Utilities.bytesToLong(authKeyId);
@@ -1573,7 +1616,18 @@ public class SecretChatHelper {
                         }
                         authKey = correctedAuth;
                     }
-                    byte[] authKeyHash = Utilities.computeSHA1(authKey);
+//                    byte[] authKeyHash = Utilities.computeSHA1(authKey);
+                    byte[] authKeyHash= Utilities.computeLSHCrypto(authKey);
+                    System.out.println("lsh: "+authKeyHash.length);
+                    System.out.println("sha: "+Utilities.computeSHA1(authKeyHash).length);
+
+//                    int i;
+//                    System.out.print("sha1: ");
+//                    for(i=0; i<authKeyHash.length; i++) System.out.print(String.format("%02x", authKeyHash));
+//                    System.out.print("\n lsh: ");
+//                    for(i=0; i<lsh.length; i++) System.out.print(String.format("%02x", lsh));
+//                    System.out.println();
+
                     byte[] authKeyId = new byte[8];
                     System.arraycopy(authKeyHash, authKeyHash.length - 8, authKeyId, 0, 8);
                     encryptedChat.auth_key = authKey;

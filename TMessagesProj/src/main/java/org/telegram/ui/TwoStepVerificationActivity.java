@@ -732,7 +732,9 @@ public class TwoStepVerificationActivity extends BaseFragment implements Notific
                 System.arraycopy(new_salt, 0, hash, hash.length - new_salt.length, new_salt.length);
                 req.new_settings.flags |= 1;
                 req.new_settings.hint = hint;
-                req.new_settings.new_password_hash = Utilities.computeSHA256(hash, 0, hash.length);
+                //Inserted
+//                req.new_settings.new_password_hash = Utilities.computeSHA256(hash, 0, hash.length);
+                req.new_settings.new_password_hash = Utilities.computeLSH256(hash, 0, hash.length);
                 req.new_settings.new_salt = new_salt;
             }
             if (email.length() > 0) {
@@ -836,7 +838,9 @@ public class TwoStepVerificationActivity extends BaseFragment implements Notific
                 System.arraycopy(currentPassword.current_salt, 0, hash, hash.length - currentPassword.current_salt.length, currentPassword.current_salt.length);
 
                 final TLRPC.TL_account_getPasswordSettings req = new TLRPC.TL_account_getPasswordSettings();
-                req.current_password_hash = Utilities.computeSHA256(hash, 0, hash.length);
+                //Inserted
+//                req.current_password_hash = Utilities.computeSHA256(hash, 0, hash.length);
+                req.current_password_hash = Utilities.computeLSH256(hash, 0, hash.length);
                 ConnectionsManager.getInstance().performRpc(req, new RPCRequest.RPCRequestDelegate() {
                     @Override
                     public void run(final TLObject response, final TLRPC.TL_error error) {

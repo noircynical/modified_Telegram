@@ -397,4 +397,124 @@ LOCAL_SRC_FILES     += \
 
 include $(BUILD_SHARED_LIBRARY)
 
+
+
+#
+# LSH256 testvector
+#
+include $(CLEAR_VARS)
+
+LOCAL_MODULE := lsh256
+ifeq ($(TARGET_ARCH_ABI),armeabi-v7a)
+    LOCAL_ARM_NEON := true
+    LOCAL_CFLAGS += -O2
+endif
+LOCAL_SRC_FILES := \
+	lsh/library.c \
+	lsh/test256.c \
+	lsh/lsh_print.c.neon \
+	lsh/lsh256_neon.c.neon
+LOCAL_LDLIBS := -llog
+
+include $(BUILD_SHARED_LIBRARY)
+
+#
+# LSH256 testvector - PIE enabled
+#
+include $(CLEAR_VARS)
+
+LOCAL_CFLAGS += -fPIE
+LOCAL_LDFLAGS += -fPIE -pie
+
+LOCAL_MODULE := lsh256-pie
+ifeq ($(TARGET_ARCH_ABI),armeabi-v7a)
+    LOCAL_ARM_NEON := true
+    LOCAL_CFLAGS += -O2
+endif
+LOCAL_SRC_FILES := \
+	lsh/test256.c \
+	lsh/lsh_print.c.neon \
+	lsh/lsh256_neon.c.neon
+LOCAL_LDLIBS := -llog
+
+include $(BUILD_EXECUTABLE)
+
+#
+# LSH512 testvector
+#
+include $(CLEAR_VARS)
+
+LOCAL_MODULE := lsh512
+ifeq ($(TARGET_ARCH_ABI),armeabi-v7a)
+    LOCAL_ARM_NEON := true
+    LOCAL_CFLAGS += -O2
+endif
+LOCAL_SRC_FILES := \
+	lsh/test512.c \
+	lsh/lsh_print.c.neon \
+	lsh/lsh512_neon.c.neon
+
+include $(BUILD_EXECUTABLE)
+
+#
+# LSH512 testvector - PIE enabled
+#
+include $(CLEAR_VARS)
+
+LOCAL_CFLAGS += -fPIE
+LOCAL_LDFLAGS += -fPIE -pie
+
+LOCAL_MODULE := lsh512-pie
+ifeq ($(TARGET_ARCH_ABI),armeabi-v7a)
+    LOCAL_ARM_NEON := true
+    LOCAL_CFLAGS += -O2
+endif
+LOCAL_SRC_FILES := \
+	lsh/test512.c \
+	lsh/lsh_print.c.neon \
+	lsh/lsh512_neon.c.neon
+
+include $(BUILD_EXECUTABLE)
+
+#
+# benckmark
+#
+include $(CLEAR_VARS)
+
+LOCAL_MODULE := lsh_benchmark
+ifeq ($(TARGET_ARCH_ABI),armeabi-v7a)
+    LOCAL_ARM_NEON := true
+    LOCAL_CFLAGS += -O2
+endif
+LOCAL_SRC_FILES := \
+	lsh/lsh_print.c.neon \
+	lsh/lsh256_neon.c.neon \
+	lsh/lsh512_neon.c.neon \
+	lsh/lsh_benchmark.c \
+	lsh/benchmark_arm.c
+
+include $(BUILD_EXECUTABLE)
+
+#
+# benckmark - PIE enabled
+#
+include $(CLEAR_VARS)
+
+LOCAL_CFLAGS += -fPIE
+LOCAL_LDFLAGS += -fPIE -pie
+
+LOCAL_MODULE := lsh_benchmark-pie
+ifeq ($(TARGET_ARCH_ABI),armeabi-v7a)
+    LOCAL_ARM_NEON := true
+    LOCAL_CFLAGS += -O2
+endif
+LOCAL_SRC_FILES := \
+	lsh/lsh_print.c.neon \
+	lsh/lsh256_neon.c.neon \
+	lsh/lsh512_neon.c.neon \
+	lsh/lsh_benchmark.c \
+	lsh/benchmark_arm.c
+
+include $(BUILD_EXECUTABLE)
+
 $(call import-module,android/cpufeatures)

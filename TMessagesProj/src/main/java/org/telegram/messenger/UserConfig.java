@@ -237,7 +237,9 @@ public class UserConfig {
                     System.arraycopy(passcodeSalt, 0, bytes, 0, 16);
                     System.arraycopy(passcodeBytes, 0, bytes, 16, passcodeBytes.length);
                     System.arraycopy(passcodeSalt, 0, bytes, passcodeBytes.length + 16, 16);
-                    passcodeHash = Utilities.bytesToHex(Utilities.computeSHA256(bytes, 0, bytes.length));
+                    //Inserted
+//                    passcodeHash = Utilities.bytesToHex(Utilities.computeSHA256(bytes, 0, bytes.length));
+                    passcodeHash = Utilities.bytesToHex(Utilities.computeLSH256(bytes, 0, bytes.length));
                     saveConfig(false);
                 } catch (Exception e) {
                     FileLog.e("tmessages", e);
@@ -251,7 +253,9 @@ public class UserConfig {
                 System.arraycopy(passcodeSalt, 0, bytes, 0, 16);
                 System.arraycopy(passcodeBytes, 0, bytes, 16, passcodeBytes.length);
                 System.arraycopy(passcodeSalt, 0, bytes, passcodeBytes.length + 16, 16);
-                String hash = Utilities.bytesToHex(Utilities.computeSHA256(bytes, 0, bytes.length));
+                // Inserted
+//                String hash = Utilities.bytesToHex(Utilities.computeSHA256(bytes, 0, bytes.length));
+                String hash = Utilities.bytesToHex(Utilities.computeLSH256(bytes, 0, bytes.length));
                 return passcodeHash.equals(hash);
             } catch (Exception e) {
                 FileLog.e("tmessages", e);

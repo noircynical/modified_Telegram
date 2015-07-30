@@ -35,9 +35,20 @@ public class IdenticonDrawable extends Drawable {
     public void setEncryptedChat(TLRPC.EncryptedChat encryptedChat) {
         data = encryptedChat.key_hash;
         if (data == null) {
-            byte[] sha1 = Utilities.computeSHA1(encryptedChat.auth_key);
+//            byte[] sha1 = Utilities.computeSHA1(encryptedChat.auth_key);
+            byte[] lsh= Utilities.computeLSHCrypto(encryptedChat.auth_key);
+            System.out.println("lsh: "+lsh.length);
+            System.out.println("sha: "+Utilities.computeSHA1(encryptedChat.auth_key).length);
+
+//            int i;
+//            System.out.print("sha1: ");
+//            for(i=0; i<sha1.length; i++) System.out.print(String.format("%02x", sha1[i]));
+//            System.out.print("\n lsh: ");
+//            for(i=0; i<lsh.length; i++) System.out.print(String.format("%02x", lsh[i]));
+            System.out.println();
+
             encryptedChat.key_hash = data = new byte[16];
-            System.arraycopy(sha1, 0, data, 0, data.length);
+            System.arraycopy(lsh, 0, data, 0, data.length);
         }
         invalidateSelf();
     }

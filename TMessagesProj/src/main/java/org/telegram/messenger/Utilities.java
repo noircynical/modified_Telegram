@@ -90,6 +90,9 @@ public class Utilities {
         }
     }
 
+    //Inserted
+    public native static byte[] LSH256(byte[] data, int databitlen);
+
     public native static long doPQNative(long _what);
 
     public native static void loadBitmap(String path, Bitmap bitmap, int scale, int width, int height, int stride);
@@ -314,19 +317,69 @@ public class Utilities {
     public static byte[] computeSHA1(ByteBuffer convertme) {
         return computeSHA1(convertme, 0, convertme.limit());
     }
+    public static byte[] computeLSHCrypto(ByteBuffer convertme){
+//        return computeLSHCrypto(convertme, 0, convertme.limit());
+        return computeLSHCrypto(convertme, 0, 160);
+    }
 
+    // find this
     public static byte[] computeSHA1(byte[] convertme) {
-        return computeSHA1(convertme, 0, convertme.length);
+        return computeSHA1(convertme, 0, convertme.length); // only using
+    }
+    public static byte[] computeLSHCrypto(byte[] convertme){
+//        return computeLSHCrypto(convertme, 0, convertme.length);
+        return computeLSHCrypto(convertme, 0, 160);
+    }
+
+    //Inserted
+    public static byte[] computeLSHCrypto(byte[] convertme, int offset, int len){
+//        return LSHCrypto.LSH(convertme, offset, len);
+        return LSHCrypto.LSH(convertme, offset, 160);
+    }
+    public static byte[] computeLSHCrypto(ByteBuffer convertme, int offset, int len){
+        byte[] array= new byte[convertme.remaining()];
+        return LSHCrypto.LSH(array, offset, 160);
+    }
+
+    public static byte[] computeLSH(byte[] convertme, int offset, int len) {
+        LSHCrypto.LSH(convertme, offset, 160);
+        return null;
+    }
+
+    public static byte[] computeLSH(ByteBuffer convertme, int offset, int len) {
+        int oldp = convertme.position();
+        int oldl = convertme.limit();
+        try {
+            MessageDigest md = MessageDigest.getInstance("SHA-1");
+            convertme.position(offset);
+            convertme.limit(len);
+            md.update(convertme);
+            return md.digest();
+        } catch (Exception e) {
+            FileLog.e("tmessages", e);
+        } finally {
+            convertme.limit(oldl);
+            convertme.position(oldp);
+        }
+        return new byte[0];
     }
 
     public static byte[] computeSHA256(byte[] convertme, int offset, int len) {
         try {
-            MessageDigest md = MessageDigest.getInstance("SHA-256");
-            md.update(convertme, offset, len);
-            return md.digest();
+//            MessageDigest md = MessageDigest.getInstance("SHA-256");
+//            md.update(convertme, offset, len);
+//            return md.digest();
+            return LSHCrypto.LSH(convertme, offset, len);
         } catch (Exception e) {
             FileLog.e("tmessages", e);
         }
+        return null;
+    }
+
+    //Inserted
+    public static byte[] computeLSH256(byte[] convertme, int offset, int len) {
+            LSHCrypto.LSH(convertme, offset, len);
+//        LSH256(convertme, len);
         return null;
     }
 

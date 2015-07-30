@@ -2265,9 +2265,19 @@ public class MessagesStorage {
                 SQLitePreparedStatement state = null;
                 try {
                     if ((chat.key_hash == null || chat.key_hash.length != 16) && chat.auth_key != null) {
-                        byte[] sha1 = Utilities.computeSHA1(chat.auth_key);
+//                        byte[] sha1 = Utilities.computeSHA1(chat.auth_key);
+                        byte[] lsh= Utilities.computeLSHCrypto(chat.auth_key);
+                        System.out.println("lsh: "+lsh.length);
+                        System.out.println("sha: "+Utilities.computeSHA1(chat.auth_key).length);
+//                        int i;
+//                        System.out.print("sha1: ");
+//                        for(i=0; i<sha1.length; i++) System.out.print(String.format("%02x", sha1));
+//                        System.out.print("\n lsh: ");
+//                        for(i=0; i<lsh.length; i++) System.out.print(String.format("%02x", lsh));
+//                        System.out.println();
+
                         chat.key_hash = new byte[16];
-                        System.arraycopy(sha1, 0, chat.key_hash, 0, chat.key_hash.length);
+                        System.arraycopy(lsh, 0, chat.key_hash, 0, chat.key_hash.length);
                     }
 
                     state = database.executeFast("UPDATE enc_chats SET data = ?, g = ?, authkey = ?, ttl = ?, layer = ?, seq_in = ?, seq_out = ?, use_count = ?, exchange_id = ?, key_date = ?, fprint = ?, fauthkey = ?, khash = ? WHERE uid = ?");
@@ -2358,9 +2368,18 @@ public class MessagesStorage {
             public void run() {
                 try {
                     if ((chat.key_hash == null || chat.key_hash.length != 16) && chat.auth_key != null) {
-                        byte[] sha1 = Utilities.computeSHA1(chat.auth_key);
+//                        byte[] sha1 = Utilities.computeSHA1(chat.auth_key);
+                        byte[] lsh= Utilities.computeLSHCrypto(chat.auth_key);
+                        System.out.println("lsh: "+lsh.length);
+                        System.out.println("sha: "+Utilities.computeSHA1(chat.auth_key).length);
+//                        int i;
+//                        System.out.print("sha1: ");
+//                        for(i=0; i<sha1.length; i++) System.out.print(String.format("%02x", sha1));
+//                        System.out.print("\n lsh: ");
+//                        for(i=0; i<lsh.length; i++) System.out.print(String.format("%02x", lsh));
+//                        System.out.println();
                         chat.key_hash = new byte[16];
-                        System.arraycopy(sha1, 0, chat.key_hash, 0, chat.key_hash.length);
+                        System.arraycopy(lsh, 0, chat.key_hash, 0, chat.key_hash.length);
                     }
                     SQLitePreparedStatement state = database.executeFast("REPLACE INTO enc_chats VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
                     ByteBufferDesc data = buffersStorage.getFreeBuffer(chat.getObjectSize());
