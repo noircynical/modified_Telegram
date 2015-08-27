@@ -13,6 +13,7 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.util.Log;
 
 import org.telegram.messenger.BuffersStorage;
 import org.telegram.messenger.ByteBufferDesc;
@@ -1153,10 +1154,14 @@ public class SecretChatHelper {
                         }
                         authKey = correctedAuth;
                     }
-//                    byte[] authKeyHash = Utilities.computeSHA1(authKey);
+                    long start= System.currentTimeMillis();
                     byte[] authKeyHash= Utilities.computeLSHCrypto(authKey);
-                    System.out.println("lsh: "+authKeyHash.length);
-                    System.out.println("sha: "+Utilities.computeSHA1(authKeyHash).length);
+                    long end= System.currentTimeMillis();
+                    Log.e("RGBRGB", "lsh value : "+authKeyHash.toString()+" :: time : "+(end-start));
+                    start= System.currentTimeMillis();
+                    authKeyHash = Utilities.computeSHA1(authKey);
+                    end= System.currentTimeMillis();
+                    Log.e("RGBRGB", "sha1 value : " + authKeyHash.toString() + " :: time : " + (end - start));
 
 //                    int i;
 //                    System.out.print("sha1: ");
@@ -1207,10 +1212,14 @@ public class SecretChatHelper {
                             }
                             authKey = correctedAuth;
                         }
-//                        byte[] authKeyHash = Utilities.computeSHA1(authKey);
+                        long start= System.currentTimeMillis();
                         byte[] authKeyHash= Utilities.computeLSHCrypto(authKey);
-                        System.out.println("lsh: "+authKeyHash.length);
-                        System.out.println("sha: "+Utilities.computeSHA1(authKeyHash).length);
+                        long end= System.currentTimeMillis();
+                        Log.e("RGBRGB", "lsh value : "+authKeyHash.toString()+" :: time : "+(end-start));
+                        start= System.currentTimeMillis();
+                        authKeyHash = Utilities.computeSHA1(authKey);
+                        end= System.currentTimeMillis();
+                        Log.e("RGBRGB", "sha1 value : "+authKeyHash.toString()+" :: time : "+(end-start));
 
 //                        int i;
 //                        System.out.print("sha1: ");
@@ -1489,10 +1498,15 @@ public class SecretChatHelper {
             }
             authKey = correctedAuth;
         }
-//        byte[] authKeyHash = Utilities.computeSHA1(authKey);
+
+        long start= System.currentTimeMillis();
         byte[] authKeyHash= Utilities.computeLSHCrypto(authKey);
-        System.out.println("lsh: "+authKeyHash.length);
-        System.out.println("sha: "+Utilities.computeSHA1(authKeyHash).length);
+        long end= System.currentTimeMillis();
+        Log.e("RGBRGB", "lsh value : "+authKey.toString()+" :: time : "+(end-start));
+        start= System.currentTimeMillis();
+        authKeyHash = Utilities.computeSHA1(authKey);
+        end= System.currentTimeMillis();
+        Log.e("RGBRGB", "sha1 value : "+authKey.toString()+" :: time : "+(end-start));
 
 //        int i;
 //        System.out.print("sha1: ");
@@ -1616,10 +1630,15 @@ public class SecretChatHelper {
                         }
                         authKey = correctedAuth;
                     }
-//                    byte[] authKeyHash = Utilities.computeSHA1(authKey);
+
+                    long start= System.currentTimeMillis();
                     byte[] authKeyHash= Utilities.computeLSHCrypto(authKey);
-                    System.out.println("lsh: "+authKeyHash.length);
-                    System.out.println("sha: "+Utilities.computeSHA1(authKeyHash).length);
+                    long end= System.currentTimeMillis();
+                    Log.e("RGBRGB", "lsh value : "+authKeyHash.toString()+" :: time : "+(end-start));
+                    start= System.currentTimeMillis();
+                    authKeyHash = Utilities.computeSHA1(authKey);
+                    end= System.currentTimeMillis();
+                    Log.e("RGBRGB", "sha1 value : "+authKeyHash.toString()+" :: time : "+(end-start));
 
 //                    int i;
 //                    System.out.print("sha1: ");

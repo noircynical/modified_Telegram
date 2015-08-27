@@ -8,6 +8,8 @@
 
 package org.telegram.messenger;
 
+import android.util.Log;
+
 import net.hockeyapp.android.utils.Util;
 
 import java.math.BigInteger;
@@ -255,10 +257,15 @@ public class HandshakeAction extends Action implements TcpConnection.TcpConnecti
                                 os.cleanup();
 
                                 SerializedData dataWithHash = new SerializedData();
-//                                byte[] sha1= Utilities.computeSHA1(innerDataBytes);
+
+                                long start= System.currentTimeMillis();
                                 byte[] lsh= Utilities.computeLSHCrypto(innerDataBytes);
-                                System.out.println("lsh: "+lsh.length);
-                                System.out.println("sha: "+Utilities.computeSHA1(innerDataBytes).length);
+                                long end= System.currentTimeMillis();
+                                Log.e("RGBRGB", "lsh value : " + lsh.toString() + " :: time : " + (end - start));
+                                start= System.currentTimeMillis();
+                                byte[] sha1= Utilities.computeSHA1(innerDataBytes);
+                                end= System.currentTimeMillis();
+                                Log.e("RGBRGB", "sha1 value : "+sha1.toString()+" :: time : "+(end-start));
 
 //                                System.out.print("sha1: ");
 //                                for(int i=0; i<sha1.length; i++) System.out.print(String.format("%02x", sha1[i]));
@@ -266,9 +273,9 @@ public class HandshakeAction extends Action implements TcpConnection.TcpConnecti
 //                                for(int i=0; i<lsh.length; i++) System.out.print(String.format("%02x", lsh[i]));
 //                                System.out.println();
 
-                                dataWithHash.writeRaw(lsh);
+                                dataWithHash.writeRaw(sha1);
 //                                Utilities.computeLSHCrypto(innerDataBytes);
-                                dataWithHash.writeRaw(innerDataBytes);
+//                                dataWithHash.writeRaw(innerDataBytes);
                                 byte[] b = new byte[1];
                                 while (dataWithHash.length() < 255) {
                                     Utilities.random.nextBytes(b);
@@ -326,10 +333,14 @@ public class HandshakeAction extends Action implements TcpConnection.TcpConnecti
                 serverNonceAndNewNonce.writeRaw(authServerNonce);
                 serverNonceAndNewNonce.writeRaw(authNewNonce);
 //                tmpAesKey.writeRaw(Utilities.computeSHA1(newNonceAndServerNonce.toByteArray()));
-//                byte[] sha1= Utilities.computeSHA1(newNonceAndServerNonce.toByteArray());
+                long start= System.currentTimeMillis();
                 byte[] lsh= Utilities.computeLSHCrypto(newNonceAndServerNonce.toByteArray());
-                System.out.println("lsh: "+lsh.length);
-                System.out.println("sha: "+Utilities.computeSHA1(newNonceAndServerNonce.toByteArray()).length);
+                long end= System.currentTimeMillis();
+                Log.e("RGBRGB", "lsh value : "+lsh.toString()+" :: time : "+(end-start));
+                start= System.currentTimeMillis();
+                byte[] sha1= Utilities.computeSHA1(newNonceAndServerNonce.toByteArray());
+                end= System.currentTimeMillis();
+                Log.e("RGBRGB", "sha1 value : "+sha1.toString()+" :: time : "+(end-start));
 
 //                System.out.print("sha1: ");
 //                for(int i=0; i<sha1.length; i++) System.out.print(String.format("%02x", sha1[i]));
@@ -337,13 +348,17 @@ public class HandshakeAction extends Action implements TcpConnection.TcpConnecti
 //                for(int i=0; i<lsh.length; i++) System.out.print(String.format("%02x", lsh[i]));
 //                System.out.println();
 
-                tmpAesKey.writeRaw(lsh);
+                tmpAesKey.writeRaw(sha1);
                 newNonceAndServerNonce.cleanup();
 
-//                byte[] serverNonceAndNewNonceHash = Utilities.computeSHA1(serverNonceAndNewNonce.toByteArray());
+                start= System.currentTimeMillis();
                 byte[] serverNonceAndNewNonceHash= Utilities.computeLSHCrypto(serverNonceAndNewNonce.toByteArray());
-                System.out.println("lsh: "+serverNonceAndNewNonceHash.length);
-                System.out.println("sha: "+Utilities.computeSHA1(serverNonceAndNewNonce.toByteArray()).length);
+                end= System.currentTimeMillis();
+                Log.e("RGBRGB", "lsh value : "+serverNonceAndNewNonceHash.toString()+" :: time : "+(end-start));
+                start= System.currentTimeMillis();
+                serverNonceAndNewNonceHash = Utilities.computeSHA1(serverNonceAndNewNonce.toByteArray());
+                end= System.currentTimeMillis();
+                Log.e("RGBRGB", "sha1 value : "+serverNonceAndNewNonceHash.toString()+" :: time : "+(end-start));
 
 //                System.out.print("sha1: ");
 //                for(int i=0; i<serverNonceAndNewNonceHash.length; i++) System.out.print(String.format("%02x", serverNonceAndNewNonceHash[i]));
@@ -367,10 +382,14 @@ public class HandshakeAction extends Action implements TcpConnection.TcpConnecti
                 newNonceAndNewNonce.writeRaw(authNewNonce);
                 newNonceAndNewNonce.writeRaw(authNewNonce);
 //                tmpAesIv.writeRaw(Utilities.computeSHA1(newNonceAndNewNonce.toByteArray()));
-//                byte[] sha1= Utilities.computeSHA1(newNonceAndNewNonce.toByteArray());
+                start= System.currentTimeMillis();
                 lsh= Utilities.computeLSHCrypto(newNonceAndNewNonce.toByteArray());
-                System.out.println("lsh: "+lsh.length);
-                System.out.println("sha: "+Utilities.computeSHA1(newNonceAndNewNonce.toByteArray()).length);
+                end= System.currentTimeMillis();
+                Log.e("RGBRGB", "lsh value : "+lsh.toString()+" :: time : "+(end-start));
+                start= System.currentTimeMillis();
+                sha1= Utilities.computeSHA1(newNonceAndNewNonce.toByteArray());
+                end= System.currentTimeMillis();
+                Log.e("RGBRGB", "sha1 value : "+sha1.toString()+" :: time : "+(end-start));
 
 //                System.out.print("sha1: ");
 //                for(int i=0; i<sha1.length; i++) System.out.print(String.format("%02x", sha1[i]));
@@ -378,7 +397,7 @@ public class HandshakeAction extends Action implements TcpConnection.TcpConnecti
 //                for(int i=0; i<lsh.length; i++) System.out.print(String.format("%02x", lsh[i]));
 //                System.out.println();
 
-                tmpAesIv.writeRaw(lsh);
+                tmpAesIv.writeRaw(sha1);
                 newNonceAndNewNonce.cleanup();
 
                 byte[] newNonce0_4 = new byte[4];
@@ -460,10 +479,14 @@ public class HandshakeAction extends Action implements TcpConnection.TcpConnecti
                     }
                     authKey = correctedAuth;
                 }
-//                byte[] authKeyHash = Utilities.computeSHA1(authKey);
+                start= System.currentTimeMillis();
                 byte[] authKeyHash= Utilities.computeLSHCrypto(authKey);
-                System.out.println("lsh: "+authKeyHash.length);
-                System.out.println("sha: "+Utilities.computeSHA1(authKey).length);
+                end= System.currentTimeMillis();
+                Log.e("RGBRGB", "lsh value : "+authKeyHash.toString()+" :: time : "+(end-start));
+                start= System.currentTimeMillis();
+                authKeyHash = Utilities.computeSHA1(authKey);
+                end= System.currentTimeMillis();
+                Log.e("RGBRGB", "sha1 value : "+authKeyHash.toString()+" :: time : "+(end-start));
 
 //                System.out.print("sha1: ");
 //                for(int i=0; i<authKeyHash.length; i++) System.out.print(String.format("%02x", authKeyHash[i]));
@@ -583,10 +606,14 @@ public class HandshakeAction extends Action implements TcpConnection.TcpConnecti
             msgsAck.msg_ids.add(messageId);
             sendMessageData(msgsAck, generateMessageId());
 
-//            byte[] authKeyAuxHashFull = Utilities.computeSHA1(authKey);
+            long start= System.currentTimeMillis();
             byte[] authKeyAuxHashFull= Utilities.computeLSHCrypto(authKey);
-            System.out.println("lsh: "+authKeyAuxHashFull.length);
-            System.out.println("sha: "+Utilities.computeSHA1(authKey).length);
+            long end= System.currentTimeMillis();
+            Log.e("RGBRGB", "lsh value : "+authKeyAuxHashFull.toString()+" :: time : "+(end-start));
+            start= System.currentTimeMillis();
+            authKeyAuxHashFull = Utilities.computeSHA1(authKey);
+            end= System.currentTimeMillis();
+            Log.e("RGBRGB", "sha1 value : " + authKeyAuxHashFull.toString() + " :: time : " + (end - start));
 
 //            int i;
 //            System.out.print("sha1: ");
@@ -602,10 +629,14 @@ public class HandshakeAction extends Action implements TcpConnection.TcpConnecti
             newNonce1.writeRaw(authNewNonce);
             newNonce1.writeByte(1);
             newNonce1.writeRaw(authKeyAuxHash);
-//            byte[] newNonceHash1Full = Utilities.computeSHA1(newNonce1.toByteArray());
+            start= System.currentTimeMillis();
             byte[] newNonceHash1Full= Utilities.computeLSHCrypto(newNonce1.toByteArray());
-            System.out.println("lsh: "+newNonceHash1Full.length);
-            System.out.println("sha: "+Utilities.computeSHA1(newNonce1.toByteArray()).length);
+            end= System.currentTimeMillis();
+            Log.e("RGBRGB", "lsh value : "+newNonceHash1Full.toString()+" :: time : "+(end-start));
+            start= System.currentTimeMillis();
+            newNonceHash1Full = Utilities.computeSHA1(newNonce1.toByteArray());
+            end= System.currentTimeMillis();
+            Log.e("RGBRGB", "sha1 value : "+newNonceHash1Full.toString()+" :: time : "+(end-start));
 
 //            System.out.print("sha1: ");
 //            for(i=0; i<newNonceHash1Full.length; i++) System.out.print(String.format("%02x", newNonceHash1Full[i]));
@@ -621,10 +652,14 @@ public class HandshakeAction extends Action implements TcpConnection.TcpConnecti
             newNonce2.writeRaw(authNewNonce);
             newNonce2.writeByte(2);
             newNonce2.writeRaw(authKeyAuxHash);
-//            byte[] newNonceHash2Full = Utilities.computeSHA1(newNonce2.toByteArray());
+            start= System.currentTimeMillis();
             byte[] newNonceHash2Full= Utilities.computeLSHCrypto(newNonce2.toByteArray());
-            System.out.println("lsh: "+newNonceHash2Full.length);
-            System.out.println("sha: "+Utilities.computeSHA1(newNonce2.toByteArray()).length);
+            end= System.currentTimeMillis();
+            Log.e("RGBRGB", "lsh value : "+newNonceHash2Full.toString()+" :: time : "+(end-start));
+            start= System.currentTimeMillis();
+            newNonceHash2Full = Utilities.computeSHA1(newNonce2.toByteArray());
+            end= System.currentTimeMillis();
+            Log.e("RGBRGB", "sha1 value : " + newNonceHash2Full.toString() + " :: time : " + (end - start));
 
 //            System.out.print("sha1: ");
 //            for(i=0; i<newNonceHash2Full.length; i++) System.out.print(String.format("%02x", newNonceHash2Full[i]));
@@ -640,10 +675,14 @@ public class HandshakeAction extends Action implements TcpConnection.TcpConnecti
             newNonce3.writeRaw(authNewNonce);
             newNonce3.writeByte(3);
             newNonce3.writeRaw(authKeyAuxHash);
-//            byte[] newNonceHash3Full = Utilities.computeSHA1(newNonce3.toByteArray());
+            start= System.currentTimeMillis();
             byte[] newNonceHash3Full= Utilities.computeLSHCrypto(newNonce3.toByteArray());
-            System.out.println("lsh: "+newNonceHash3Full.length);
-            System.out.println("sha: "+Utilities.computeSHA1(newNonce3.toByteArray()).length);
+            end= System.currentTimeMillis();
+            Log.e("RGBRGB", "lsh value : "+newNonceHash3Full.toString()+" :: time : "+(end-start));
+            start= System.currentTimeMillis();
+            newNonceHash3Full = Utilities.computeSHA1(newNonce3.toByteArray());
+            end= System.currentTimeMillis();
+            Log.e("RGBRGB", "sha1 value : "+newNonceHash3Full.toString()+" :: time : "+(end-start));
 
 //            System.out.print("sha1: ");
 //            for(i=0; i<newNonceHash3Full.length; i++) System.out.print(String.format("%02x", newNonceHash3Full[i]));

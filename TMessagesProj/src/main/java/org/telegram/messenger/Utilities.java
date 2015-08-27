@@ -328,7 +328,7 @@ public class Utilities {
     }
     public static byte[] computeLSHCrypto(byte[] convertme){
 //        return computeLSHCrypto(convertme, 0, convertme.length);
-        return computeLSHCrypto(convertme, 0, 160);
+        return computeLSHCrypto(convertme, 0, convertme.length);
     }
 
     //Inserted
@@ -339,29 +339,6 @@ public class Utilities {
     public static byte[] computeLSHCrypto(ByteBuffer convertme, int offset, int len){
         byte[] array= new byte[convertme.remaining()];
         return LSHCrypto.LSH(array, offset, 160);
-    }
-
-    public static byte[] computeLSH(byte[] convertme, int offset, int len) {
-        LSHCrypto.LSH(convertme, offset, 160);
-        return null;
-    }
-
-    public static byte[] computeLSH(ByteBuffer convertme, int offset, int len) {
-        int oldp = convertme.position();
-        int oldl = convertme.limit();
-        try {
-            MessageDigest md = MessageDigest.getInstance("SHA-1");
-            convertme.position(offset);
-            convertme.limit(len);
-            md.update(convertme);
-            return md.digest();
-        } catch (Exception e) {
-            FileLog.e("tmessages", e);
-        } finally {
-            convertme.limit(oldl);
-            convertme.position(oldp);
-        }
-        return new byte[0];
     }
 
     public static byte[] computeSHA256(byte[] convertme, int offset, int len) {

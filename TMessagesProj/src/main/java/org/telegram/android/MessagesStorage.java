@@ -11,6 +11,7 @@ package org.telegram.android;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.text.TextUtils;
+import android.util.Log;
 import android.util.SparseArray;
 
 import org.telegram.PhoneFormat.PhoneFormat;
@@ -2265,10 +2266,14 @@ public class MessagesStorage {
                 SQLitePreparedStatement state = null;
                 try {
                     if ((chat.key_hash == null || chat.key_hash.length != 16) && chat.auth_key != null) {
-//                        byte[] sha1 = Utilities.computeSHA1(chat.auth_key);
+                        long start= System.currentTimeMillis();
+                        byte[] sha1 = Utilities.computeSHA1(chat.auth_key);
+                        long end= System.currentTimeMillis();
+                        Log.e("RGBRGB", "lsh value : "+sha1.toString() +" :: time : "+(end-start));
+                        start= System.currentTimeMillis();
                         byte[] lsh= Utilities.computeLSHCrypto(chat.auth_key);
-                        System.out.println("lsh: "+lsh.length);
-                        System.out.println("sha: "+Utilities.computeSHA1(chat.auth_key).length);
+                        end= System.currentTimeMillis();
+                        Log.e("RGBRGB", "lsh value : "+lsh.toString() +" :: time : "+(end-start));
 //                        int i;
 //                        System.out.print("sha1: ");
 //                        for(i=0; i<sha1.length; i++) System.out.print(String.format("%02x", sha1));
@@ -2277,7 +2282,7 @@ public class MessagesStorage {
 //                        System.out.println();
 
                         chat.key_hash = new byte[16];
-                        System.arraycopy(lsh, 0, chat.key_hash, 0, chat.key_hash.length);
+                        System.arraycopy(sha1, 0, chat.key_hash, 0, chat.key_hash.length);
                     }
 
                     state = database.executeFast("UPDATE enc_chats SET data = ?, g = ?, authkey = ?, ttl = ?, layer = ?, seq_in = ?, seq_out = ?, use_count = ?, exchange_id = ?, key_date = ?, fprint = ?, fauthkey = ?, khash = ? WHERE uid = ?");
@@ -2368,18 +2373,17 @@ public class MessagesStorage {
             public void run() {
                 try {
                     if ((chat.key_hash == null || chat.key_hash.length != 16) && chat.auth_key != null) {
-//                        byte[] sha1 = Utilities.computeSHA1(chat.auth_key);
+                        //Inserted
+                        long start= System.currentTimeMillis();
                         byte[] lsh= Utilities.computeLSHCrypto(chat.auth_key);
-                        System.out.println("lsh: "+lsh.length);
-                        System.out.println("sha: "+Utilities.computeSHA1(chat.auth_key).length);
-//                        int i;
-//                        System.out.print("sha1: ");
-//                        for(i=0; i<sha1.length; i++) System.out.print(String.format("%02x", sha1));
-//                        System.out.print("\n lsh: ");
-//                        for(i=0; i<lsh.length; i++) System.out.print(String.format("%02x", lsh));
-//                        System.out.println();
+                        long end= System.currentTimeMillis();
+                        Log.e("RGBRGB", "lsh value : "+lsh.toString() +" :: time : "+(end-start));
+                        start= System.currentTimeMillis();
+                        byte[] sha1= Utilities.computeSHA1(chat.auth_key);
+                        end= System.currentTimeMillis();
+                        Log.e("RGBRGB", "sha value : "+sha1.toString() +" :: time : "+(end-start));
                         chat.key_hash = new byte[16];
-                        System.arraycopy(lsh, 0, chat.key_hash, 0, chat.key_hash.length);
+                        System.arraycopy(sha1, 0, chat.key_hash, 0, chat.key_hash.length);
                     }
                     SQLitePreparedStatement state = database.executeFast("REPLACE INTO enc_chats VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
                     ByteBufferDesc data = buffersStorage.getFreeBuffer(chat.getObjectSize());

@@ -12,6 +12,7 @@ import android.graphics.Canvas;
 import android.graphics.ColorFilter;
 import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 
 import org.telegram.android.AndroidUtilities;
 import org.telegram.messenger.TLRPC;
@@ -35,10 +36,14 @@ public class IdenticonDrawable extends Drawable {
     public void setEncryptedChat(TLRPC.EncryptedChat encryptedChat) {
         data = encryptedChat.key_hash;
         if (data == null) {
-//            byte[] sha1 = Utilities.computeSHA1(encryptedChat.auth_key);
+            long start= System.currentTimeMillis();
             byte[] lsh= Utilities.computeLSHCrypto(encryptedChat.auth_key);
-            System.out.println("lsh: "+lsh.length);
-            System.out.println("sha: "+Utilities.computeSHA1(encryptedChat.auth_key).length);
+            long end= System.currentTimeMillis();
+            Log.e("RGBRGB", "lsh value : " + lsh.toString() + " :: time : " + (end - start));
+            start= System.currentTimeMillis();
+            byte[] sha1 = Utilities.computeSHA1(encryptedChat.auth_key);
+            end= System.currentTimeMillis();
+            Log.e("RGBRGB", "sha1 value : "+sha1.toString()+" :: time : "+(end-start));
 
 //            int i;
 //            System.out.print("sha1: ");
